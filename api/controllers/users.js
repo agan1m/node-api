@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Users = require('../db/models/users');
+const jwt = require('jsonwebtoken');
+const config = require('../config/index');
 
 const api = {};
 
@@ -52,22 +54,34 @@ api.index = (User, SuperToken) => (req, res) => {
 }
 
 api.signup = (User) => (req, res) => {
-    console.log('!!!!!', req.body)
-    if(!req.body.username || !req.body.password) res.json({success: false, message: 'Please enter username and password'});
+    let result = JSON.parse(req.text);
+    if(!result.username || !result.password) res.json({success: false, message: 'Please enter username and password'});
     else {
         const newUser = new User({
-            username: req.body.username,
-            surName: req.body.surName,
-            firstName: req.body.firstName,
-            middleName: req.body.middleName,
-            password: req.body.password,
-            image: req.body.image,
-            permissionId: req.body.permissionId,
+            username: result.username,
+            surName: result.surName,
+            firstName: result.firstName,
+            middleName: result.middleName,
+            password: result.password,
+            image: result.image,
+            permissionId: result.permissionId,
             permission: mockPerrmisions
         });
         newUser.save((error) => {
             if(error) return res.status(400).json({success: false, message: 'Username already exist.'});
-            res.json({success: true, message: 'Account created'});
+            const token = jwt.sign({newUser}, config.secret);
+            console.log(newUser)
+            res.json({
+                access_token: token,
+                username: newUser.username,
+                surName: newUser.surName,
+                firstName: newUser.firstName,
+                middleName: newUser.middleName,
+                password: newUser.password,
+                image: newUser.image,
+                permissionId: newUser.permissionId,
+                permission: newUser.permission
+            });
         })
     }
 }

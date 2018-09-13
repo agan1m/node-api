@@ -23,7 +23,16 @@ app.use(express.static(path.join(__dirname, '../dist')));
 app.use(passport.initialize());
 
 app.set('supersecret', config.secret);
-
+app.use(function(req, res, next){
+  if (req.is('text/*')) {
+      req.text = '';
+      req.setEncoding('utf8');
+      req.on('data', function(chunk){ req.text += chunk });
+      req.on('end', next);
+  } else {
+      next();
+  }
+});
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(process.cwd(), 'dist/index.html'));
 });
