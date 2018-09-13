@@ -70,7 +70,6 @@ api.signup = (User) => (req, res) => {
         newUser.save((error) => {
             if(error) return res.status(400).json({success: false, message: 'Username already exist.'});
             const token = jwt.sign({newUser}, config.secret);
-            console.log(newUser)
             res.json({
                 access_token: token,
                 username: newUser.username,

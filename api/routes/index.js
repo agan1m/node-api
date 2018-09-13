@@ -3,7 +3,9 @@ var router = express.Router();
 
 const authCtrl = require('../controllers/auth');
 const userCtrl = require('../controllers/users');
+const newsCtrl = require('../controllers/news');
 const userModel = require('../db/models/users');
+const newsModel = require('../db/models/news');
 
 router.get('/', function(req, res, next) {
   res.json({ success: true });
@@ -26,6 +28,8 @@ router.get('/', function(req, res, next) {
 router.post('/login', authCtrl.login(userModel));
 router.post('/setup', userCtrl.setup(userModel));
 router.post('/saveNewUser', userCtrl.signup(userModel));
+router.post('/newNews', newsCtrl.saveNews(newsModel));
+router.get('/getNews', newsCtrl.getNews(newsModel));
 
 /* router.post('/login', async (req, res) => {
     try {
