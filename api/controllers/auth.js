@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('../config/index');
-
+const LocalStorage = require('node-localstorage').LocalStorage;
+const localStorage = new LocalStorage('./br');
 const api = {};
 
 api.login = (User) => (req, res) => {
@@ -15,6 +16,7 @@ api.login = (User) => (req, res) => {
             user.comparePassword(result.password, (error, matches) => {
                 if(matches && !error) {
                     const token = jwt.sign({user}, config.secret);
+                    localStorage.setItem('token', token);
                     res.json({
                         access_token: token,
                         username: user.username,

@@ -10,6 +10,9 @@ const schema = new mongoose.Schema({
     },
     date:{
         type: Date,
+    },
+    user: {
+        
     }
 });
 

@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+const LocalStorage = require('node-localstorage').LocalStorage;
+const localStorage = new LocalStorage('./br');
+
 const authCtrl = require('../controllers/auth');
 const userCtrl = require('../controllers/users');
 const newsCtrl = require('../controllers/news');
@@ -30,6 +33,8 @@ router.post('/setup', userCtrl.setup(userModel));
 router.post('/saveNewUser', userCtrl.signup(userModel));
 router.post('/newNews', newsCtrl.saveNews(newsModel));
 router.get('/getNews', newsCtrl.getNews(newsModel));
+router.get('/getUsers', userCtrl.index(userModel, localStorage.getItem('token')));
+router.put('/updateNews', newsCtrl.updateNews(newsModel));
 
 /* router.post('/login', async (req, res) => {
     try {

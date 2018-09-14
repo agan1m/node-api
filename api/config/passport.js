@@ -3,7 +3,6 @@ const PassportJWT = require('passport-jwt'),
       Strategy = PassportJWT.Strategy,
       config = require('./index.js'),
       User = require('../db/models/users');
-      //models = require('@BudgetManager/app/setup');
 
 module.exports = (passport) => {
 

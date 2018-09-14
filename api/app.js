@@ -33,9 +33,7 @@ app.use(function(req, res, next){
       next();
   }
 });
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(process.cwd(), 'dist/index.html'));
-});
+
 app.use('/api', require('./routes/index'));
 
 // catch 404 and forward to error handler
@@ -56,15 +54,3 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
-
-
-/* app.use(function(req, res, next){
-  if (req.is('text/*')) {
-      req.text = '';
-      req.setEncoding('utf8');
-      req.on('data', function(chunk){ req.text += chunk });
-      req.on('end', next);
-  } else {
-      next();
-  }
-}); */

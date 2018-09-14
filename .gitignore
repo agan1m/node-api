@@ -32,7 +32,6 @@ Thumbs.db
 .svn
 .vscode
 bower_components
-dist
 build
 public
 
